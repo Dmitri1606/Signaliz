@@ -1,0 +1,26 @@
+#include <ESP8266WiFi.h>
+#include <WiFiClientSecure.h>
+#include <UniversalTelegramBot.h>
+
+const char* WIFI_SSID = "***";
+const char* WIFI_PASS = "***";
+const char* BOT_TOKEN = "***";
+const String CHAT_ID = "**********";
+
+WiFiClientSecure client;
+UniversalTelegramBot bot(BOT_TOKEN, client);
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(13, INPUT);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  while (WiFi.status() != WL_CONNECTED) delay(500);
+  client.setInsecure();
+  bot.sendMessage(CHAT_ID, "Сигнализация активирована");
+}
+void loop() {
+  if (digitalRead(13) == HIGH) {
+    bot.sendMessage(CHAT_ID, "ВНИМАНИЕ ВОР!!!!!!!!!!!!!!!!!!!");
+  }
+  delay(500);
+}
